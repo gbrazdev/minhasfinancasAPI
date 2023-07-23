@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import com.gabrielbrazdev.minhasfinancas.excepitions.RuleBusinessException;
 import com.gabrielbrazdev.minhasfinancas.model.entity.User;
 import com.gabrielbrazdev.minhasfinancas.model.repository.UserRepository;
-import com.gabrielbrazdev.minhasfinancas.service.UserSerevice;
+import com.gabrielbrazdev.minhasfinancas.service.UserService;
 
 @Service
-public class UserServiceImpl implements UserSerevice {
+public class UserServiceImpl implements UserService {
 
 	private UserRepository repository;
 
