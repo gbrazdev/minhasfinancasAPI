@@ -1,15 +1,21 @@
 package com.gabrielbrazdev.minhasfinancas.service.impl;
 
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
+
+import com.gabrielbrazdev.minhasfinancas.excepitions.AuthErrorException;
 import com.gabrielbrazdev.minhasfinancas.excepitions.RuleBusinessException;
 import com.gabrielbrazdev.minhasfinancas.model.entity.User;
 import com.gabrielbrazdev.minhasfinancas.model.repository.UserRepository;
-import com.gabrielbrazdev.minhasfinancas.service.UserSerevice;
+import com.gabrielbrazdev.minhasfinancas.service.UserService;
+
+import javax.transaction.Transactional;
 
 @Service
-public class UserServiceImpl implements UserSerevice {
+public class UserServiceImpl implements UserService {
 
 	private UserRepository repository;
 
@@ -18,13 +24,22 @@ public class UserServiceImpl implements UserSerevice {
 		this.repository = repository;
 	}
 
-	@Override
+	@Override	
 	public User authenticate(String email, String password) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<User> user = repository.findByEmail(email);
+		
+		if (!user.isPresent()) {			
+			throw new AuthErrorException("User not found");			
+		}
+		
+		if (!user.get().getSenha().equals(password)) {
+			throw new AuthErrorException("Invalid password");	
+		}
+		return user.get();
 	}
 
 	@Override
+	@Transactional
 	public User saveUser(User user) {
 		// TODO Auto-generated method stub
 		return null;
