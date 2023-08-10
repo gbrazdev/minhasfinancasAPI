@@ -2,7 +2,6 @@ package com.gabrielbrazdev.minhasfinancas.model.repository;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -28,18 +28,29 @@ public class UserRepositoryTest {
 	@Autowired
 	TestEntityManager entityManager;
 
-	@DisplayName("Verify if email exists")
 	@Test
-	public void verifyEmailExists() {
+	public void deveVerificarAExistenciaDeUmEmail() {
 		// cenário
-		User user = criarUser();
-		entityManager.persist(user);
+		User usuario = criarUser();
+		entityManager.persist(usuario);
 
 		// ação/ execução
 		boolean result = repository.existsByEmail("usuario@email.com");
 
 		// verificacao
 		Assertions.assertThat(result).isTrue();
+
+	}
+
+	@Test
+	public void deveRetornarFalsoQuandoNaoHouverUserCadastradoComOEmail() {
+		// cenário
+
+		// acao
+		boolean result = repository.existsByEmail("usuario@email.com");
+
+		// verificacao
+		Assertions.assertThat(result).isFalse();
 	}
 
 	@Test
@@ -74,6 +85,7 @@ public class UserRepositoryTest {
 		Optional<User> result = repository.findByEmail("usuario@email.com");
 
 		Assertions.assertThat(result.isPresent()).isFalse();
+
 	}
 
 	public static User criarUser() {
